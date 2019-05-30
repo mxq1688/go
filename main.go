@@ -265,8 +265,14 @@ func main() {
 	fmt.Println(f1())
 	fmt.Println(f2())
 	fmt.Println(f3())
+	//fmt.Println(ml())
 	f()
 
+}
+
+func ml() (mm int)  {
+	t := 10
+	return t //会把t赋值给mm
 }
 
 func f(){
@@ -297,7 +303,7 @@ func f2() (r int) {
 func f3() (r int) {
 	defer func(r int) {
 		r = r + 5
-	}(r)
+	}(r)		//r是参数传进函数
 	return 1
 }
 func pritBooks2(book *Books)(string)  {
