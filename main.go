@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 //import (
 //	f "fmt"//别名
@@ -17,8 +15,8 @@ import (
 //定义结构体
 type Books struct {
 	book_id int
-	uid int
-	title string
+	uid     int
+	title   string
 	content string
 }
 
@@ -36,6 +34,7 @@ func (de *DivideError) Error() string {
 	`
 	return fmt.Sprintf(strFormat, de.dividee)
 }
+
 // 定义 `int` 类型除法运算的函数
 func Divide(varDividee int, varDivider int) (result int, errorMsg string) {
 	if varDivider == 0 {
@@ -58,7 +57,6 @@ type Phone interface {
 
 type NokiaPhone struct {
 	title string
-
 }
 
 func (nokiaPhone NokiaPhone) call() {
@@ -69,12 +67,13 @@ type IPhone struct {
 	title string
 }
 
-func (iPhone IPhone) call()  {
+func (iPhone IPhone) call() {
 	fmt.Println(iPhone)
 }
 
 func main() {
 
+	// test1.Feo()
 	//a,_,c := 1.2,2,3//只能在函数内使用  _回收变量
 	//var d = int(a)
 	//fmt.Println(a,c,d, reflect.TypeOf(d))
@@ -84,28 +83,32 @@ func main() {
 	//const y = iota;
 	//fmt.Println(x, y)
 
-	//const (//const中每新增一行常量声明将使iota计数一次
-	//	a1 = iota
-	//	a2 = iota
-	//	_			//跳值使用法
-	//	a3 = iota
-	//)
-	//const (
-	//	a1 = iota
-	//	a2 = 3.14	//插队使用法
-	//	a3 = iota
-	//)
-	//const (
-	//	a1 = iota * 2
-	//	a2 	//隐式使用法。省略iota，会继承上一个非空表达式
-	//	a3
-	//)
-	//const(
-	//	a1,a2 = iota, iota + 3 //同一行iota不会增加
-	//	b1,b2				   //b1继承a1, b2继承a2
-	//	f = iota
-	//)
-	//fmt.Println(a1,a2,b1,b2, f)
+	// const ( //const中每新增一行常量声明将使iota计数一次
+	// 	a1 = iota
+	// 	a2 = iota
+	// 	_  //跳值使用法
+	// 	a3 = iota
+	// )
+	// fmt.Println(a1, a2, a3)
+	// const (
+	// 	a1 = iota
+	// 	a2 = 3.14 //插队使用法
+	// 	a3 = iota
+	// )
+	// fmt.Println(a1, a2, a3)
+	// const (
+	// 	a1 = iota * 2
+	// 	a2 //隐式使用法。省略iota，会继承上一个非空表达式
+	// 	a3
+	// )
+	// fmt.Println(a1, a2, a3)
+
+	// const (
+	// 	a1, a2 = iota, iota + 3 //同一行iota不会增加
+	// 	b1, b2                  //b1继承a1, b2继承a2
+	// 	f      = iota
+	// )
+	// fmt.Println(a1, a2, b1, b2, f)
 
 	//if a< 3 {
 	//
@@ -126,24 +129,26 @@ func main() {
 	//fmt.Println(x, y)
 
 	//数组
-	//var arr = [5]int{1,2,3,4,5}
-	//var arr = []int{1,2,3,4,5}
-	//var arr1 = [...]int{1,2,3,4,5}
-	//var arr2 [] int//定义数组
-	//fmt.Println(arr, arr1, arr2)
+	// var arr = [5]int{1, 2, 3, 4, 5}
+	// arr := []int{1, 2, 3, 4, 6}
+	// var arr1 = [...]int{1, 2, 3, 4, 5, 6, 7, 8}
+	// var arr2 []int //定义数组
+	// fmt.Println(arr, arr1, arr2)
 
 	//指针
-	//var m = 123
-	//var o *int = &m
-	//var oo **int = &o
-	//var ooo ***int = &oo
-	//fmt.Println(o, *o, oo, **oo, ooo, ***ooo)//指向指针的指针
+	// var m = 123
+	// var o *int = &m
+	// var oo **int = &o
+	// var ooo ***int = &oo
+	// fmt.Println(m, o, *o, oo, *oo, **oo, ooo, ***ooo) //指向指针的指针
 
 	//指针数组
-	//var arr = []int{1,2,3}
-	//var arr_ptr [3]*int
-	//arr_ptr[0] = &arr[0]
-	//fmt.Println(arr, arr_ptr, *arr_ptr[0])
+	// var arr = []int{1, 2, 3}
+	// var arr_ptr [3]*int
+	// arr_ptr[0] = &arr[0]
+	// arr_ptr[1] = &arr[1]
+	// arr_ptr[2] = &arr[2]
+	// fmt.Println(arr, arr_ptr, *arr_ptr[0])
 
 	//指针函数  	//函数参数传引用
 	//var a,b = 1,2
@@ -151,31 +156,30 @@ func main() {
 	//fmt.Println(a,b, c,d)
 
 	//结构体
-	//fmt.Println(Books{1,2,"i am title", "i am content"})
-	//fmt.Println(Books{book_id:1,uid:2,title:"i am title", content:"i am content"})
-	//var books1 Books = Books{1,2,"i am title", "content"}
-	//books1.title = "haha"
-	//fmt.Println(books1)
-	//fmt.Println(books1.title)
+	// fmt.Println(Books{1, 2, "i am title", "i am content"})
+	// fmt.Println(Books{book_id: 1, uid: 2, title: "i am title", content: "i am content"})
+	// var books1 Books = Books{1, 2, "i am title", "content"}
+	// books1.title = "haha"
+	// fmt.Println(books1)
+	// fmt.Println(books1.title)
 
 	//结构体作为函数参数
-	//fmt.Println(printBooks(books1))
+	// fmt.Println(printBooks(books1))
 
 	//结构体指针
-	//var struct_pointer *Books
-	//struct_pointer = &books1
-	//fmt.Println(struct_pointer, &books1, *&books1)
-	//fmt.Println(pritBooks2(&books1), books1)
-
+	// var struct_pointer *Books
+	// struct_pointer = &books1
+	// fmt.Println(struct_pointer, &books1, *&books1)
+	// fmt.Println(pritBooks2(&books1), books1)
 
 	//Slice 切片
-	//var identifier_nil []int  //定义空切片
-	// identifier := make([]int, 10, 20)//创建切片
-	//var slice1 []int = make([]int, 2)
-	//s := identifier[:]//初始化切片s,是数组identifier的引用
-	//m := identifier[:5]//初始化切片s,是数组identifier的引用
-	//fmt.Println(identifier,slice1, s, m, len(s), cap(s))
-	//fmt.Println(identifier_nil == nil)
+	// var identifier_nil []int          //定义空切片
+	// identifier := make([]int, 10, 20) //创建切片
+	// var slice1 []int = make([]int, 2)
+	// s := identifier[:]  //初始化切片s,是数组identifier的引用
+	// m := identifier[:5] //初始化切片s,是数组identifier的引用
+	// fmt.Println(identifier, slice1, s, m, len(s), cap(s))
+	// fmt.Println(identifier_nil == nil)
 
 	//numbers1 := make([]int,0,5)
 	//fmt.Println(numbers1, len(numbers1), cap(numbers1))
@@ -218,26 +222,25 @@ func main() {
 	//}
 
 	//接口
-	//var phone Phone
+	// var phone Phone
 	//
-	//phone = new(NokiaPhone)
-	//phone.call()
+	// phone = new(NokiaPhone)
+	// phone.call()
 	//
-	//phone = new(IPhone)
-	//phone.call()
+	// phone = new(IPhone)
+	// phone.call()
 
 	//错误处理
 	//if result, errorMsg := Divide(100, 10); errorMsg == "" {
-		// 正常情况
-		//fmt.Println("100/10 = ", result)
+	//	//正常情况
+	//	fmt.Println("100/10 = ", result)
 	//}
 	// 当被除数为零的时候会返回错误信息
 	//if _, errorMsg := Divide(100, 0); errorMsg != "" {
-	//	fmt.Println("errorMsg is: ", errorMsg)
-		//m := errors.New(errorMsg)
-		//fmt.Println(m)
+	//	//fmt.Println("errorMsg is: ", errorMsg)
+	//	m := errors.New(errorMsg)
+	//	fmt.Println(m)
 	//}
-
 
 	//var mm error
 	//mm = errors.New("faew")
@@ -245,47 +248,48 @@ func main() {
 	//	panic(mm)
 	//}
 
-	//panic相当于其他语言里的throw，而recover相当于其他语言里的cacth，可是由于golang的recover机制要求必须在defer的函数里才能执行catchpanic
+	//panic相当于其他语言里的throw，而recover相当于其他语言里的cacth，可是由于golang的recover机制要求必须在defer的函数里才能执行catch panic
 	//defer必须在panic之前
 	// 必须要先声明defer，否则不能捕获到panic异常  //defer通常用于资源释放、打印日志、异常捕获等
 	//如果有多个defer函数，调用顺序类似于栈，越后面的defer函数越先被执行(后进先出)
-	defer func(){
+	defer func() {
 
-		fmt.Println("c")
+		fmt.Println("before-end")
 
-		if err:=recover();err!=nil{
+		if err := recover(); err != nil {
 
 			fmt.Println(err) // 这里的err其实就是panic传入的内容，55
 
 		}
 
-		fmt.Println("d")
+		fmt.Println("end")
 
 	}()
-	fmt.Println(f1())
-	fmt.Println(f2())
-	fmt.Println(f3())
-	//fmt.Println(ml())
+	// fmt.Println(f1())
+	// fmt.Println(f2())
+	// fmt.Println(f3())
+	// fmt.Println(ml())
 	f()
 
 }
 
-func ml() (mm int)  {
+func ml() (mm int) {
 	t := 10
 	return t //会把t赋值给mm
 }
 
-func f(){
+func f() {
 
 	fmt.Println("a")
 
-	panic(55)//panic后就中断
+	panic(55) //panic后就中断
 
 	fmt.Println("b")
 
 	fmt.Println("f")
 
 }
+
 //含有defer函数的外层函数，返回的过程是这样的：先给返回值赋值，然后调用defer函数，最后才是返回到更上一级调用函数中 下面三例子
 func f1() (result int) {
 	defer func() {
@@ -298,21 +302,21 @@ func f2() (r int) {
 	defer func() {
 		t = t + 5
 	}()
-	return t   		//先给r赋值 r = t 然后t变化不影响r
+	return t //先给r赋值 r = t 然后t变化不影响r
 }
 func f3() (r int) {
 	defer func(r int) {
 		r = r + 5
-	}(r)		//r是参数传进函数
+	}(r) //r是参数传进函数
 	return 1
 }
-func pritBooks2(book *Books)(string)  {
-	fmt.Println((*book).title, book.title) //为什么是一样的
+func pritBooks2(book *Books) string {
+	fmt.Println((*book).title, book.title) //为什么是一样的 结构体访问数据是一样的
 	book.title = "change"
 	return book.title
 }
 
-func printBooks(book Books)(string)  {
+func printBooks(book Books) string {
 	return book.title
 }
 
@@ -321,7 +325,7 @@ func swap2(a *int, b *int) (int, int) {
 	tem = *a
 	*a = *b
 	*b = tem
-	return *a,*b
+	return *a, *b
 }
 
 /* 函数返回两个数的最大值 */
@@ -329,7 +333,7 @@ func max(num1, num2 int) int {
 	/* 定义局部变量 */
 	var result int
 
-	if (num1 > num2) {
+	if num1 > num2 {
 		result = num1
 	} else {
 		result = num2
@@ -340,4 +344,3 @@ func max(num1, num2 int) int {
 func swap(x string, y string) (string, string) {
 	return y, x
 }
-

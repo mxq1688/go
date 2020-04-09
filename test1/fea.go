@@ -2,12 +2,12 @@ package test1
 
 import "fmt"
 
-func init()  {
-	fmt.Println("this is feo")
+func init() {
+	fmt.Println("this is init")
 }
 
-func Feo()  {
+func Feo() {
 
-
+	fmt.Println("this is feo")
 
 }
