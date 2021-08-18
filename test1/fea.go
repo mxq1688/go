@@ -6,8 +6,8 @@ func init() {
 	fmt.Println("this is init")
 }
 
-func Feo() {
+func Say() {
 
-	fmt.Println("this is feo")
+	fmt.Println("say hello")
 
 }
