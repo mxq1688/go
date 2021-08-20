@@ -23,7 +23,7 @@ func main() {
 	var arr1 = [...]int{1, 2, 3, 4, 5, 6, 7, 8} //根据初始值的个数自行推断数组的长度
 	var arr2 [2]int
 	arr2 = [2]int{1, 2}
-	fmt.Println(arr, arr1, arr2, arr3)
+	fmt.Println(arr, arr1, arr2)
 
 	// 二维数组： var arrayName [ x ][ y ] variable_type
 	a := [3][4]int{
@@ -39,6 +39,9 @@ func main() {
 	values = append(values, row2)
 
 	//for遍历数组
+	for key, value := range a {
+		fmt.Println(key, value)
+	}
 
 	//指针数组
 }

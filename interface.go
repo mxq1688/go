@@ -11,20 +11,22 @@ type NokiaPhone struct {
 	title string
 }
 
-func (nokiaPhone NokiaPhone) call() {
-	fmt.Println(nokiaPhone)
-}
-
 type IPhone struct {
 	title string
 }
 
+//实现接口
+func (nokiaPhone NokiaPhone) call() {
+	fmt.Println("I am Nokia, I can call you!")
+}
+
+//实现接口
 func (iPhone IPhone) call() {
-	fmt.Println(iPhone)
+	fmt.Println("I am iPhone, I can call you!")
 }
 
 func main() {
-	//接口
+	//接口变量
 	var phone Phone
 
 	phone = new(NokiaPhone)
