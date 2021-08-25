@@ -53,7 +53,7 @@ func main() {
 	})
 
 	// 函数参数返回形式
-
+	fmt.Println(test("er"))
 }
 
 /* 函数返回两个数的最大值 */
@@ -94,4 +94,15 @@ func testCallBack(x int, f cb) {
 func callBack(x int) int {
 	fmt.Printf("我是回调，x：%d\n", x)
 	return x
+}
+
+func test(params string) (result string, error string) {
+	if params == "ok" {
+		result = "this is ok"
+	} else {
+		error = "this is error"
+	}
+	// return result, error
+	// 或者直接return，对于有名返回值
+	return
 }

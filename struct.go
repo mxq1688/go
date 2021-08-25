@@ -2,6 +2,15 @@ package main
 
 import "fmt"
 
+/*
+	type:
+		1、定义结构体，接口
+		2、类型等价定义，相当于类型重命名
+			type name string #name类型与string等价
+		3、定义函数类型
+			type handler func(name string) int
+*/
+
 //定义结构体
 type Books struct {
 	book_id int
@@ -33,7 +42,7 @@ func main() {
 	fmt.Println(struct_pointer, &books1, *&books1)
 
 	//结构体指针作为函数参数，传递的是引用，会影响外面的值
-	fmt.Println(pritBooks2(&books1), books1)
+	fmt.Println(pritBooks2(&books1), books1.title)
 }
 
 func printBooks(book Books) string {

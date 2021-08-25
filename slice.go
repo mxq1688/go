@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// 使用make创建的 Slice类型 是引用类型
+// 通过引用数组得到的切片 是引用类型
 /*
 	切片是对数组的抽象。
 	定义切片
@@ -15,7 +17,7 @@ import "fmt"
 */
 func main() {
 	//定义
-	// var identifier_nil []int          //定义空切片
+	// var identifier_nil []int          //申明空切片 //赋值 identifier_nil = []int{0, 1, 2}
 	// identifier := make([]int, 10, 20) //创建切片
 	// var slice1 []int = make([]int, 2)
 	// s := identifier[:]  //初始化切片s,是数组identifier的引用
@@ -24,12 +26,14 @@ func main() {
 	// fmt.Println(identifier_nil == nil)
 
 	/* 在切片上施加切片 */
-	// numbers := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
-	// numbers1 := make([]int, 0, 5)
-	// printSlice(numbers1)
-	// /* 打印子切片从索引  0(包含) 到索引 2(不包含) */
-	// number2 := numbers[2:5] //cap根据 2 来决定（9-2）
-	// printSlice(number2)
+	nums := []int{0, 1, 2, 3, 4, 5, 6, 7, 8}
+	nums1 := make([]int, 0, 5)
+	printSlice(nums1)
+	/* 打印子切片从索引  0(包含) 到索引 2(不包含) */
+	nums2 := nums[2:5] //cap根据 2 来决定（9-2）
+	nums[3] = 111      //验证是引用类型
+	fmt.Println(nums, nums2)
+	printSlice(nums2)
 
 	/*
 		append() copy()

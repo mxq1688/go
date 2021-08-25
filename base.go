@@ -4,6 +4,11 @@ import (
 	"fmt"
 )
 
+/*
+值类型分别有：int系列、float系列、bool、string、数组和结构体
+引用类型有：指针、slice切片、管道channel、接口interface、map、函数等
+*/
+
 //import (
 //	f "fmt"//别名
 //	. "fmt" //使用fmt中的方法时可以省略fmt

@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// Map 类型是引用类型
 /*
 	Map 是一种集合，所以我们可以像迭代数组和切片那样迭代它。不过，Map 是无序的，我们无法决定它的返回顺序，这是因为 Map 是使用 hash 表来实现的。
 	申明map: 如果不初始化 map，那么就会创建一个 nil map。nil map 不能用来存放键值对
@@ -14,11 +15,12 @@ import "fmt"
 */
 
 func main() {
-	//定义空ma，不能存放键值对
+	//申明map，nil map 不能用来存放键值对
 	var mMap map[string]string
 
 	//创建map并初始化
 	var nMap = make(map[string]string)
+	mMap = nMap //Map 类型是引用类型
 	nMap["title"] = "title"
 	nMap["name"] = "mxq"
 	fmt.Println(mMap, nMap)

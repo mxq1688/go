@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	//if
@@ -11,7 +14,7 @@ func main() {
 		fmt.Println("a>3")
 	}
 
-	//switch
+	//switch 不用break
 	value := 0
 	switch value {
 	case 0:
@@ -37,4 +40,28 @@ func main() {
 			如果有 default 子句，则执行该语句。
 			如果没有 default 子句，select 将阻塞，直到某个通信可以运行；Go 不会重新对 channel 或值进行求值。
 	*/
+	ch := make(chan int)
+	c := 0
+	stopCh := make(chan bool)
+	go Chann(ch, stopCh)
+	for {
+		select {
+		case c = <-ch:
+			fmt.Println("Receive", c)
+			fmt.Println("channel")
+		case s := <-ch:
+			fmt.Println("Receive", s)
+		case _ = <-stopCh:
+			goto end
+		}
+	}
+end:
+}
+
+func Chann(ch chan int, stopCh chan bool) {
+	for j := 0; j < 10; j++ {
+		ch <- j
+		time.Sleep(time.Second)
+	}
+	stopCh <- true
 }

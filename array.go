@@ -42,6 +42,4 @@ func main() {
 	for key, value := range a {
 		fmt.Println(key, value)
 	}
-
-	//指针数组
 }

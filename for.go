@@ -9,6 +9,7 @@ func main() {
 		和 C 的 for(;;) 一样：or { }
 
 		break 语句	经常用于中断当前 for 循环或跳出 switch 语句
+		return 可以退出多重循环
 		continue 语句	跳过当前循环的剩余语句，然后继续进行下一轮循环。
 		goto 语句	将控制转移到被标记的语句。
 			goto label
