@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
@@ -19,17 +21,30 @@ import (
 	通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯。操作符 <- 用于指定通道的方向，发送或接收。如果未指定方向，则为双向通道。
 
 	注意：默认情况下，通道是不带缓冲区的。发送端发送数据，同时必须有接收端相应的接收数据。
-	channel有两种形式:
-		一种是无缓冲的，一个线程向这个channel发送了消息后，会阻塞当前的这个线程，直到其他线程去接收这个channel的消息。
-			无缓冲的形式：intChan := make(chan int)
-		带缓冲的channel，是可以指定缓冲的消息数量，当消息数量小于指定值时，不会出现阻塞，超过之后才会阻塞，需要等待其他线程去接收channel处理
-			带缓冲的形式：intChan := make(chan int， 3)
-	var ch chan string; // nil channel 通道零值为nil（没有任何作用）
+		channel有两种形式:
+			一种是无缓冲的，一个线程向这个channel发送了消息后，会阻塞当前的这个线程，直到其他线程去接收这个channel的消息。
+				无缓冲的形式：intChan := make(chan int)
+			带缓冲的channel，是可以指定缓冲的消息数量，当消息数量小于指定值时，不会出现阻塞，超过之后才会阻塞，需要等待其他线程去接收channel处理
+				带缓冲的形式：intChan := make(chan int， 3)
+		var ch chan string; // nil channel 通道零值为nil（没有任何作用）
 
-	ch := make(chan int, 1)
-	ch <- 11  // 把 v 发送到通道 ch
-	x := <-ch //从 ch 接收数据，赋值给x
-	fmt.Println(x)
+	判断通道是否关闭：
+	 	1 第二个字段为true时，channel可能没关闭，也可能已经关闭，不能证明什么
+		2 第二个字段为false时，可以证明channel中已没有残留数据且已关闭
+		if v, ok := <- ch; ok {
+			fmt.Println(v)
+		}
+
+读取通道：
+	1、for range
+	2、for ok
+		for{
+			if v, ok := <- ch; ok {
+				fmt.Println(v)
+			}else{
+				break
+			}
+		}
 */
 
 func main() {
@@ -65,13 +80,17 @@ func main() {
 	/* 	1个发送者 N个接收者（进行扩展）	*/
 	// testClose1()
 	/*	N 个发送者 1个接收者	添加一个 停止通知 接收端告诉发送端不要发送了  */
-	testClose2()
+	// testClose2()
 	/*
 		select 用法类似与 IO 多路复用，可以同时监听多个 channel 的消息状态
 
 		for循环select时，如果其中一个case通道已经关闭，则每次都会执行到这个case。
+			怎么样才能不读关闭后通道:
+				当返回的ok为false时，执行c = nil 将通道置为nil
 		如果select里边只有一个case，而这个case被关闭了，则会出现死循环。
 	*/
+	/*	N个发送者 M个接收者	*/
+	testClose3()
 }
 
 func say(s string) {
@@ -167,7 +186,7 @@ func testClose2() {
 				case <-stopCh:
 					// for循环select时，如果其中一个case通道已经关闭，则每次都会执行到这个case。
 					fmt.Println("接收到停止发送的信号")
-					return //干净利落，适合退出goroutin的场景
+					// return //干净利落，适合退出goroutin的场景
 				case dataCh <- value:
 				}
 			}
@@ -187,4 +206,68 @@ func testClose2() {
 			break
 		}
 	}
+}
+
+func testClose3() {
+	dataCh := make(chan T, 100)
+	toStop := make(chan string)
+	stopCh := make(chan T)
+	//简约版调度器
+	go func() {
+		if t, ok := <-toStop; ok {
+			log.Println(t)
+			close(stopCh)
+		}
+	}()
+	//生产者
+	for i := 0; i < 30; i++ {
+		go func(i int) {
+			for {
+				id := strconv.Itoa(i)
+				value := T(rand.Intn(100))
+				if value == 99 {
+					select {
+					case toStop <- "sender# id:" + id + "to close":
+					default:
+					}
+				}
+				select {
+				case <-stopCh:
+					return
+				default:
+				}
+				select {
+				case <-stopCh:
+					return
+				case dataCh <- value:
+				}
+			}
+		}(i)
+	}
+	//消费者
+	for i := 0; i < 20; i++ {
+		go func(i int) {
+			id := strconv.Itoa(i)
+			for {
+				select {
+				case <-stopCh:
+					return
+				default:
+				}
+				select {
+				case <-stopCh:
+					return
+				case value := <-dataCh:
+					if value == 98 {
+						select {
+						case toStop <- "receiver# id:" + id + "to close":
+						default:
+						}
+					}
+					log.Println("receiver value :", value)
+				}
+			}
+		}(i)
+	}
+	time.Sleep(10 * time.Second)
 }

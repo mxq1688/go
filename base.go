@@ -31,6 +31,17 @@ init函数会先运行，引入的包文件中的init函数优先于当前init�
 
 */
 
+/*
+	字符串连接：
+		1、+
+		2、fmt.Sprintf("%s %s %s %s", str1,str2, str3, str4)
+		3、bytes.Buffer
+			var b bytes.Buffer
+			b.WriteString("你好")
+			b.WriteString("Golang")
+			fmt.Println("String: ", b.String())
+*/
+
 /* 声明全局变量 */
 var g int
 
