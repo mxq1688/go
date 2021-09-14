@@ -18,6 +18,7 @@ import (
 
 通道（channel）：
 	通道（channel）是用来传递数据的一个数据结构。
+	channel是一种go协程用以接收或发送消息的安全的消息队列
 	通道可用于两个 goroutine 之间通过传递一个指定类型的值来同步运行和通讯。操作符 <- 用于指定通道的方向，发送或接收。如果未指定方向，则为双向通道。
 
 	注意：默认情况下，通道是不带缓冲区的。发送端发送数据，同时必须有接收端相应的接收数据。
@@ -28,6 +29,13 @@ import (
 				带缓冲的形式：intChan := make(chan int， 3)
 		var ch chan string; // nil channel 通道零值为nil（没有任何作用）
 
+	注意：
+		1、向一个nil channel发送消息，会一直阻塞；
+		2、向一个已经关闭的channel发送消息，会引发运行时恐慌（panic）；
+		3、channel关闭后不可以继续向channel发送消息，但可以继续从channel接收消息；
+		4、当channel关闭并且缓冲区为空时，继续从从channel接收消息会得到一个对应类型的零值。
+		5、只有在通道中没有要接收的值时，接收动作才会阻塞。只有在通道没有可用缓冲区容纳被发送的值时，发送动作才会阻塞。
+
 	判断通道是否关闭：
 	 	1 第二个字段为true时，channel可能没关闭，也可能已经关闭，不能证明什么
 		2 第二个字段为false时，可以证明channel中已没有残留数据且已关闭
@@ -35,16 +43,23 @@ import (
 			fmt.Println(v)
 		}
 
-读取通道：
-	1、for range
-	2、for ok
-		for{
-			if v, ok := <- ch; ok {
-				fmt.Println(v)
-			}else{
-				break
+	通道关闭后的操作问题：
+		1、试图向已经关闭的channel发送数据会导致panic
+		2、关闭已经关闭的channel会导致panic
+		3、无论怎样都不应该在接收端关闭channel,因为在接收端无法判断发送端是否还会向通道中发送元素值
+
+	读取通道：
+		1、for range
+			如果通道不关闭，那么 range 函数就不会结束，从而在接收数据的时候就阻塞了
+		2、for ok
+			for{
+				if v, ok := <- ch; ok {
+					fmt.Println(v)
+				}else{
+					break
+				}
 			}
-		}
+		3、for select
 */
 
 func main() {
@@ -64,23 +79,16 @@ func main() {
 	/*
 		range 函数遍历每个从通道接收到的数据，因为 d 在发送完 10 个数据之后就关闭了通道，所以这里我们 range 函数在接收到 10 个数据之后就结束了。
 		如果 d 通道不关闭，那么 range 函数就不会结束，从而在接收第 11 个数据的时候就阻塞了。
-		close()：
-			1、试图向已经关闭的channel发送数据会导致panic
-			2、关闭已经关闭的channel会导致panic
-			3、无论怎样都不应该在接收端关闭channel,因为在接收端无法判断发送端是否还会向通道中发送元素值
 	*/
 	ch := make(chan int, 10)
 	go fibonacci(cap(ch), ch)
 	for i := range ch {
 		fmt.Println(i)
 	}
-
 	/*	1 个发送者 1个接收者（最简单的），发送端直接关闭channel	*/
 	// testClose()
 	/* 	1个发送者 N个接收者（进行扩展）	*/
 	// testClose1()
-	/*	N 个发送者 1个接收者	添加一个 停止通知 接收端告诉发送端不要发送了  */
-	// testClose2()
 	/*
 		select 用法类似与 IO 多路复用，可以同时监听多个 channel 的消息状态
 
@@ -89,6 +97,8 @@ func main() {
 				当返回的ok为false时，执行c = nil 将通道置为nil
 		如果select里边只有一个case，而这个case被关闭了，则会出现死循环。
 	*/
+	/*	N 个发送者 1个接收者	添加一个 停止通知 接收端告诉发送端不要发送了  */
+	// testClose2()
 	/*	N个发送者 M个接收者	*/
 	testClose3()
 }
@@ -113,6 +123,7 @@ func fibonacci(n int, c chan int) {
 	close(c)
 }
 
+/*	1 个发送者 1个接收者（最简单的），发送端直接关闭channel	*/
 func testClose() {
 	notify := make(chan int)
 	datach := make(chan int, 100)
@@ -140,6 +151,8 @@ func testClose() {
 	}
 	time.Sleep(5 * time.Second)
 }
+
+/* 	1个发送者 N个接收者（进行扩展）	*/
 func testClose1() {
 	notify := make(chan int)
 	datach := make(chan int, 100)
@@ -155,19 +168,19 @@ func testClose1() {
 	time.Sleep(2 * time.Second)
 	fmt.Println("开始通知发送信息")
 	notify <- 1
-	time.Sleep(100 * time.Second)
+	time.Sleep(1 * time.Second)
 	fmt.Println("3秒后接受到数据通道数据 此时datach 在发送端已经关闭")
 	for n := 0; n < 5; n++ {
 		go func() {
 			for {
 				if i, ok := <-datach; ok {
 					fmt.Println(i)
+					time.Sleep(500 * time.Millisecond)
 				} else {
 					break
 				}
 			}
 		}()
-
 	}
 	time.Sleep(5 * time.Second)
 }
@@ -186,7 +199,7 @@ func testClose2() {
 				case <-stopCh:
 					// for循环select时，如果其中一个case通道已经关闭，则每次都会执行到这个case。
 					fmt.Println("接收到停止发送的信号")
-					// return //干净利落，适合退出goroutin的场景
+					return //干净利落，适合退出goroutin的场景
 				case dataCh <- value:
 				}
 			}
@@ -208,6 +221,7 @@ func testClose2() {
 	}
 }
 
+/*	N个发送者 M个接收者	*/
 func testClose3() {
 	dataCh := make(chan T, 100)
 	toStop := make(chan string)

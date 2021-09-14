@@ -90,7 +90,6 @@ func test2() {
 			select {
 			case <-c:
 				fmt.Println(true)
-				// return //携程中可以不加也会退出循环
 			default:
 				fmt.Println(false)
 			}
