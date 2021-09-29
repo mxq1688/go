@@ -69,8 +69,8 @@ func test1() {
 	c := make(chan T)
 	go func() {
 		time.Sleep(3 * time.Second)
-		fmt.Println("关闭")
 		close(c)
+		fmt.Println("关闭")
 	}()
 	for {
 		select {
@@ -97,6 +97,6 @@ func test2() {
 	}()
 
 	time.Sleep(3 * time.Second)
-	fmt.Println("关闭")
 	close(c)
+	fmt.Println("关闭")
 }
