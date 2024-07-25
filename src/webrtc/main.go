@@ -6,7 +6,7 @@ import (
 	"github.com/pion/webrtc/v3"
 )
 
-var g peerConnection
+var peerConnection
 
 func main() { // main函数，是程序执行的入口
 	fmt.Println("Hello 这是你第一个GO程序，开始进入GO世界吧") // 在终端打印
