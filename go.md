@@ -23,12 +23,15 @@
         先在.zshrc中设置 GOPATH=/Users/xxx/go
         然后在~/.gvm/scripts/env gvm_use方法最后设置 source ~/.zshrc
 
+    .zshrc 按照下面的顺序
+        [[ -s "/Users/meng/.gvm/scripts/gvm" ]] && source "/Users/meng/.gvm/scripts/gvm"
+        export GOPATH=/Users/meng/stu/go #项目路径
+        export GOBIN=$GOPATH/bin   #GOLANG运行目录一般不可修改
+        export PATH=$PATH:$GOBIN
+
 ```
 #### GO111MODULE
 ```
-GO111MODULE为空默认auto
-    Go1.16+ GO111MODULE 默认为 on
-
 GO111MODULE=auto
     在 GO111MODULE=auto 模式下，你可以在包含 go.mod 文件的目录中使用模块模式，无论这个目录是否位于 GOPATH/src 下。
 
@@ -38,9 +41,13 @@ GO111MODULE=on
 GO111MODULE=off
     不使用模块支持，Go命令会忽略 go.mod 文件并且会从`GOPATH`中查找依赖。
 
+
 在 Go 1.13 及更高版本中
     如果你在一个包含 go.mod 文件的目录中运行 go 命令，模块模式会自动启动，无需设置 GO111MODULE 环境变量。
     然而，如果你在没有 go.mod 文件的目录中工作，或者你想显式地控制模块模式的行为，你可能需要设置 GO111MODULE 环境变量。
+
+GO111MODULE为空默认auto
+    Go1.16+ GO111MODULE 默认为 on
 
 ```
 #### go命令
@@ -58,16 +65,43 @@ GO111MODULE=off
 
 go env 查看配置
     go env GO111MODULE 查看某个字段
+
+运行
+    go run main.go
+
+打包
+    go build
 ```
 #### 传统模式（GOPATH）
 >src目录下
 ```
-GOPATH 是Golang 1.5版本之前一个重要的环境变量配置，是存放 Golang 项目代码的文件路径
+GOPATH 
+    是Golang 1.5版本之前一个重要的环境变量配置，是存放 Golang 项目代码的文件路径
     使用 GOPATH 模式下，我们需要将应用代码存放在固定的$GOPATH/src目录下，并且如果执行go get来拉取外部依赖会自动下载并安装到$GOPATH目录下。
 
-go clean -modcache #清理moudle 缓存
+Go1.18及以上 go get 不再执行编译和安装工作是指GO111MODULE=on在没有go.mod的目录下不能用，具体下面
+    GO111MODULE=on 
+        没有go.mod 不能用
+        有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
 
-Go 1.18 go get 不再执行编译和安装工作
+    GO111MODULE=auto
+        没有go.mod，go get能下载到项目目录下 (Go1.22不支持)
+        有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
+
+    GO111MODULE=off
+        不管有没有go.mod，go get都下载到项目目录下 (Go1.22不支持)
+
+Go1.18版本以下的：go get
+    GO111MODULE=on 
+        没有go.mod，下载到GOPATH/pkg/mod目录下 go get -u xxx
+        有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
+
+    GO111MODULE=auto 
+        没有go.mod，go get能下载到项目目录下
+        有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
+
+    GO111MODULE=off
+        不管有没有go.mod，go get都下载到项目目录下
 
 go get 升级
     go list -m -u all #来检查可以升级的package
@@ -96,6 +130,9 @@ go get = git clone + go install
             $GOPATH/pkg/mod/，同时缓存一份到：$GOPATH/pkg/mod/cache/download/
 
     方式3：go get（新版本不再支持非mod得项目）
+
+清理moudle缓存
+    go clean -modcache 
 
 go mod 命令
     go mod graph #以文本模式打印模块需求图
