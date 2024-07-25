@@ -1,5 +1,13 @@
 #### gvm go多版本管理
 >https://github.com/moovweb/gvm
+````
+安装gvm的时候需要设置终端代理
+
+clashx
+    export http_proxy=http://127.0.0.1:7890
+    export https_proxy=http://127.0.0.1:7890
+```
+>使用
 ```
 列出当前可以安装的 Go 版本
     gvm listall
