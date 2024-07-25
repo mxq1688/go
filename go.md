@@ -29,7 +29,7 @@ clashx
         或者修改$GVM_ROOT|environments文件夹里，进去把GOPATH批量替换了就行了
     方法3：
         先在.zshrc中设置 GOPATH=/Users/xxx/go
-        然后在~/.gvm/scripts/env gvm_use方法最后设置 source ~/.zshrc
+        然后在~/.gvm/scripts/env/use gvm_use方法最后设置 source ~/.zshrc
 
     .zshrc 按照下面的顺序
         [[ -s "/Users/meng/.gvm/scripts/gvm" ]] && source "/Users/meng/.gvm/scripts/gvm"
