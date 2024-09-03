@@ -10,4 +10,4 @@
 base.go
 
 ```
-#### 如果用gvm，~/go是vscode插件安装的东西
+#### 如果用gvm，~/go文件是vscode插件安装的东西

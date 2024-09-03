@@ -1,6 +1,6 @@
 #### gvm go多版本管理
 >https://github.com/moovweb/gvm
-````
+```
 安装gvm的时候需要设置终端代理
 
 clashx
@@ -38,26 +38,6 @@ clashx
         export PATH=$PATH:$GOBIN
 
 ```
-#### GO111MODULE
-```
-GO111MODULE=auto
-    在 GO111MODULE=auto 模式下，你可以在包含 go.mod 文件的目录中使用模块模式，无论这个目录是否位于 GOPATH/src 下。
-
-GO111MODULE=on
-    强制使用Go modules，即使在`GOPATH/src`目录下也会使用`go.mod`文件，并忽略`GOPATH`中的包。
-
-GO111MODULE=off
-    不使用模块支持，Go命令会忽略 go.mod 文件并且会从`GOPATH`中查找依赖。
-
-
-在 Go 1.13 及更高版本中
-    如果你在一个包含 go.mod 文件的目录中运行 go 命令，模块模式会自动启动，无需设置 GO111MODULE 环境变量。
-    然而，如果你在没有 go.mod 文件的目录中工作，或者你想显式地控制模块模式的行为，你可能需要设置 GO111MODULE 环境变量。
-
-GO111MODULE为空默认auto
-    Go1.16+ GO111MODULE 默认为 on
-
-```
 #### go命令
 ```
 修改配置
@@ -80,6 +60,26 @@ go env 查看配置
 打包
     go build
 ```
+#### GO111MODULE
+```
+GO111MODULE=auto
+    在 GO111MODULE=auto 模式下，你可以在包含 go.mod 文件的目录中使用模块模式，无论这个目录是否位于 GOPATH/src 下。
+
+GO111MODULE=on
+    强制使用Go modules，即使在`GOPATH/src`目录下也会使用`go.mod`文件，并忽略`GOPATH`中的包。
+
+GO111MODULE=off
+    不使用模块支持，Go命令会忽略 go.mod 文件并且会从`GOPATH`中查找依赖。
+
+
+在 Go 1.13 及更高版本中
+    如果你在一个包含 go.mod 文件的目录中运行 go 命令，模块模式会自动启动，无需设置 GO111MODULE 环境变量。
+    然而，如果你在没有 go.mod 文件的目录中工作，或者你想显式地控制模块模式的行为，你可能需要设置 GO111MODULE 环境变量。
+
+GO111MODULE为空默认auto
+    Go1.16+ GO111MODULE 默认为 on
+
+```
 #### 传统模式（GOPATH）
 >src目录下
 ```
@@ -93,11 +93,11 @@ Go1.18及以上 go get 不再执行编译和安装工作是指GO111MODULE=on在�
         有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
 
     GO111MODULE=auto
-        没有go.mod，go get能下载到项目目录下 (Go1.22不支持)
+        没有go.mod，go get能下载到项目目录下(GOPATH/src) (Go1.22不支持)
         有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
 
     GO111MODULE=off
-        不管有没有go.mod，go get都下载到项目目录下 (Go1.22不支持)
+        不管有没有go.mod，go get都下载到项目目录下(GOPATH/src) (Go1.22不支持)
 
 Go1.18版本以下的：go get
     GO111MODULE=on 
@@ -105,11 +105,11 @@ Go1.18版本以下的：go get
         有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
 
     GO111MODULE=auto 
-        没有go.mod，go get能下载到项目目录下
+        没有go.mod，go get能下载到项目目录下(GOPATH/src)
         有go.mod，就是mod模式，下载到GOPATH/pkg/mod目录下
 
     GO111MODULE=off
-        不管有没有go.mod，go get都下载到项目目录下
+        不管有没有go.mod，go get都下载到项目目录下(GOPATH/src)
 
 go get 升级
     go list -m -u all #来检查可以升级的package
